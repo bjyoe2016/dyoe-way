@@ -494,7 +494,7 @@
             <li>Results tracking</li>
             <li>30-day report</li>
           </ul>
-          <button onclick="openModal('booking', 'Starter')" class="btn" style="margin-top: 1rem;">Book Starter</button>
+          <a href="https://buy.stripe.com/eVq4gybAGeGIdq425h0oM01" target="_blank" class="btn" style="margin-top: 1rem;">Book Starter</a>
         </div>
 
         <div class="tier" style="border-color: var(--accent);">
@@ -506,7 +506,7 @@
             <li>Cancellation slot fill</li>
             <li>Priority support</li>
           </ul>
-          <button onclick="openModal('booking', 'Full Service')" class="btn" style="margin-top: 1rem;">Book Full Service</button>
+          <a href="https://buy.stripe.com/8x27sKeMS7egadS39l0oM02" target="_blank" class="btn" style="margin-top: 1rem;">Book Full Service</a>
         </div>
       </div>
 
@@ -561,7 +561,7 @@
         Thanks! Check your email — info on the way.
       </div>
 
-      <form id="learn-more-form" onsubmit="handleLeadCapture(event)">
+      <form id="learn-more-form" action="https://formspree.io/f/xpqozebd" method="POST" onsubmit="handleLeadCapture(event)">
         <div class="form-row">
           <div class="form-group">
             <label>First Name*</label>
@@ -601,6 +601,7 @@
           </select>
         </div>
 
+        <input type="hidden" name="_subject" value="New Lead - DYOE Way">
         <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Send Me the Info</button>
       </form>
     </div>
@@ -619,7 +620,7 @@
         Booking received! I'll reach out within 24 hours to confirm and get started.
       </div>
 
-      <form id="booking-form" onsubmit="handleBooking(event)">
+      <form id="booking-form" action="https://formspree.io/f/xpqozebd" method="POST" onsubmit="handleBooking(event)">
         <input type="hidden" id="selectedTier" name="tier" value="">
 
         <div class="form-row">
@@ -693,6 +694,7 @@
           <textarea name="notes" placeholder="VIP clients not to contact, best time to reach you, etc."></textarea>
         </div>
 
+        <input type="hidden" name="_subject" value="New Booking - DYOE Way Revenue Recovery">
         <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Submit Booking Request</button>
       </form>
     </div>
@@ -734,47 +736,47 @@
     function handleLeadCapture(event) {
       event.preventDefault();
       const form = event.target;
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData);
+      const data = new FormData(form);
 
-      // Log to console (replace with actual backend integration)
-      console.log('LEAD CAPTURE:', data);
-
-      // Show success message
-      document.getElementById('learn-more-success').classList.add('active');
-      form.reset();
-
-      // Hide success message after 3 seconds
-      setTimeout(() => {
-        closeModal('learn-more');
-        document.getElementById('learn-more-success').classList.remove('active');
-      }, 3000);
-
-      // TODO: Send to backend/email/Google Sheets
-      // You can integrate with Formspree, EmailJS, or Google Sheets API here
+      fetch('https://formspree.io/f/xpqozebd', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(res => {
+        if (res.ok) {
+          document.getElementById('learn-more-success').classList.add('active');
+          form.reset();
+          setTimeout(() => {
+            closeModal('learn-more');
+            document.getElementById('learn-more-success').classList.remove('active');
+          }, 3000);
+        }
+      }).catch(() => {
+        alert('Something went wrong. Please try again.');
+      });
     }
 
     function handleBooking(event) {
       event.preventDefault();
       const form = event.target;
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData);
+      const data = new FormData(form);
 
-      // Log to console (replace with actual backend integration)
-      console.log('BOOKING SUBMITTED:', data);
-
-      // Show success message
-      document.getElementById('booking-success').classList.add('active');
-      form.reset();
-
-      // Hide success message and close modal after 3 seconds
-      setTimeout(() => {
-        closeModal('booking');
-        document.getElementById('booking-success').classList.remove('active');
-      }, 3000);
-
-      // TODO: Send to backend/email/Google Sheets
-      // You can integrate with Formspree, EmailJS, or Google Sheets API here
+      fetch('https://formspree.io/f/xpqozebd', {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      }).then(res => {
+        if (res.ok) {
+          document.getElementById('booking-success').classList.add('active');
+          form.reset();
+          setTimeout(() => {
+            closeModal('booking');
+            document.getElementById('booking-success').classList.remove('active');
+          }, 3000);
+        }
+      }).catch(() => {
+        alert('Something went wrong. Please try again.');
+      });
     }
   </script>
 
