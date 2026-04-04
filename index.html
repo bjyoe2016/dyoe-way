@@ -102,9 +102,7 @@
       border-bottom: 1px solid #222;
       flex-wrap: wrap;
     }
-    .stat {
-      text-align: center;
-    }
+    .stat { text-align: center; }
     .stat-number {
       font-size: 2.5rem;
       font-weight: 900;
@@ -246,20 +244,14 @@
       padding: 2rem;
       text-align: center;
     }
-    .tier h4 {
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
+    .tier h4 { font-size: 1.2rem; margin-bottom: 1rem; }
     .tier-price {
       font-size: 2rem;
       font-weight: 900;
       color: var(--accent);
       margin: 1rem 0;
     }
-    .tier ul {
-      margin: 1.5rem 0;
-      font-size: 0.9rem;
-    }
+    .tier ul { margin: 1.5rem 0; font-size: 0.9rem; }
 
     /* MODAL */
     .modal {
@@ -269,15 +261,13 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(0, 0, 0, 0.85);
       z-index: 1000;
       overflow-y: auto;
       padding: 2rem;
     }
     .modal.active {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
     }
     .modal-content {
       background: var(--gray);
@@ -287,6 +277,7 @@
       width: 100%;
       padding: 3rem;
       position: relative;
+      margin: 2rem auto;
       animation: slideUp 0.3s ease;
     }
     @keyframes slideUp {
@@ -304,17 +295,16 @@
       line-height: 1;
       cursor: pointer;
       transition: color 0.2s;
+      z-index: 10;
     }
     .modal-close:hover { color: var(--accent); }
     .modal h3 {
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
     }
-    
+
     /* FORM */
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
+    .form-group { margin-bottom: 1.5rem; }
     .form-group label {
       display: block;
       margin-bottom: 0.5rem;
@@ -340,10 +330,7 @@
       outline: none;
       border-color: var(--accent);
     }
-    .form-group textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
+    .form-group textarea { min-height: 100px; resize: vertical; }
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -359,9 +346,7 @@
       font-weight: 600;
       text-align: center;
     }
-    .success-message.active {
-      display: block;
-    }
+    .success-message.active { display: block; }
 
     /* CTA */
     .cta {
@@ -558,7 +543,7 @@
   </footer>
 
   <!-- LEARN MORE MODAL -->
-  <div id="learn-more-modal" class="modal">
+  <div id="learn-more-modal" class="modal" onclick="handleOverlayClick(event, 'learn-more')">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('learn-more')">&times;</button>
       <h3>Want to Learn More?</h3>
@@ -617,7 +602,7 @@
   </div>
 
   <!-- BOOKING MODAL -->
-  <div id="booking-modal" class="modal">
+  <div id="booking-modal" class="modal" onclick="handleOverlayClick(event, 'booking')">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('booking')">&times;</button>
       <h3>Book Revenue Recovery</h3>
@@ -717,7 +702,8 @@
       const modal = document.getElementById(type + '-modal');
       modal.classList.add('active');
       document.body.style.overflow = 'hidden';
-      
+      modal.scrollTop = 0;
+
       if (type === 'booking' && tier) {
         document.getElementById('selectedTier').value = tier;
         document.getElementById('tierSelect').value = tier === 'Starter' ? 'Starter - $1,500' : 'Full Service - $3,500';
@@ -730,16 +716,14 @@
       document.body.style.overflow = 'auto';
     }
 
-    function updateTier(value) {
-      document.getElementById('selectedTier').value = value;
+    function handleOverlayClick(event, type) {
+      if (event.target === document.getElementById(type + '-modal')) {
+        closeModal(type);
+      }
     }
 
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-      if (event.target.classList.contains('modal')) {
-        event.target.classList.remove('active');
-        document.body.style.overflow = 'auto';
-      }
+    function updateTier(value) {
+      document.getElementById('selectedTier').value = value;
     }
 
     function handleLeadCapture(event) {
