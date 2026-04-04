@@ -295,16 +295,17 @@
     }
     .modal-close {
       position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
+      top: 1rem;
+      right: 1.25rem;
       background: transparent;
       border: none;
-      color: var(--muted);
-      font-size: 1.5rem;
+      color: var(--white);
+      font-size: 2rem;
+      line-height: 1;
       cursor: pointer;
       transition: color 0.2s;
     }
-    .modal-close:hover { color: var(--white); }
+    .modal-close:hover { color: var(--accent); }
     .modal h3 {
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
@@ -434,7 +435,7 @@
   <section class="hero">
     <h1>Recover the money you're <span>already missing.</span></h1>
     <p>Dead DMs. Lapsed clients. Empty appointment slots. We find them, message them, and book them for you — guaranteed 2x ROI or you don't pay.</p>
-    <button onclick="openModal('learn-more')" class="btn">Learn More</button>
+    <button onclick="document.getElementById('revenue-recovery').scrollIntoView({behavior:'smooth'})" class="btn">Learn More</button>
     <button onclick="openModal('booking')" class="btn btn-outline">Book Revenue Recovery</button>
   </section>
 
@@ -549,7 +550,7 @@
   <section class="cta">
     <h2>Ready to recover your revenue?</h2>
     <p>No fluff. Just booked appointments and real money back in your business.</p>
-    <button onclick="openModal('learn-more')" class="btn">Get Started</button>
+    <button onclick="openModal('booking')" class="btn">Get Started</button>
   </section>
 
   <footer>
