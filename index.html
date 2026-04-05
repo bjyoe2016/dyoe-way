@@ -726,17 +726,45 @@
       document.getElementById('selectedTier').value = value;
     }
 
+    // Airtable config — replace with your actual values
+    const AIRTABLE_API_KEY = 'YOUR_AIRTABLE_API_KEY';
+    const AIRTABLE_BASE_ID = 'YOUR_AIRTABLE_BASE_ID';
+
+    function sendToAirtable(tableName, fields) {
+      return fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(tableName)}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ fields })
+      });
+    }
+
     function handleLeadCapture(event) {
       event.preventDefault();
       const form = event.target;
       const data = new FormData(form);
 
-      fetch('https://formspree.io/f/xpqozebd', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      }).then(res => {
-        if (res.ok) {
+      const airtableFields = {
+        'First Name': data.get('firstName') || data.get('first-name') || '',
+        'Last Name': data.get('lastName') || data.get('last-name') || '',
+        'Email': data.get('email') || '',
+        'Phone': data.get('phone') || '',
+        'Business Name': data.get('businessName') || data.get('business-name') || '',
+        'Business Type': data.get('businessType') || data.get('business-type') || '',
+        'Source': 'Learn More Form'
+      };
+
+      Promise.all([
+        fetch('https://formspree.io/f/xpqozebd', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        }),
+        sendToAirtable('Leads', airtableFields)
+      ]).then(([formspreeRes]) => {
+        if (formspreeRes.ok) {
           document.getElementById('learn-more-success').classList.add('active');
           form.reset();
           setTimeout(() => {
@@ -754,12 +782,29 @@
       const form = event.target;
       const data = new FormData(form);
 
-      fetch('https://formspree.io/f/xpqozebd', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      }).then(res => {
-        if (res.ok) {
+      const airtableFields = {
+        'First Name': data.get('firstName') || data.get('first-name') || '',
+        'Last Name': data.get('lastName') || data.get('last-name') || '',
+        'Email': data.get('email') || '',
+        'Phone': data.get('phone') || '',
+        'Business Name': data.get('businessName') || data.get('business-name') || '',
+        'Instagram Handle': data.get('instagram') || '',
+        'Business Type': data.get('businessType') || data.get('business-type') || '',
+        'Booking Software': data.get('bookingSoftware') || data.get('booking-software') || '',
+        'Service Tier': data.get('tier') || data.get('selectedTier') || '',
+        'Notes': data.get('notes') || data.get('message') || '',
+        'Source': 'Booking Form'
+      };
+
+      Promise.all([
+        fetch('https://formspree.io/f/xpqozebd', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        }),
+        sendToAirtable('Bookings', airtableFields)
+      ]).then(([formspreeRes]) => {
+        if (formspreeRes.ok) {
           document.getElementById('booking-success').classList.add('active');
           form.reset();
           setTimeout(() => {
